@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        @font-face {
+            font-family: 'Futuristic';
+            src: url('Futuristic.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #000000, #0a0a0a, #151515, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: none;
+            position: relative;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)" opacity="0.08"/%3E%3C/svg%3E');
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .character {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #movingChar {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #stillChar {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .animated-text {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Futuristic', sans-serif;
+            font-size: 72px;
+            color: #00ffff;
+            text-shadow:
+                0 0 10px rgba(0, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 255, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3);
+            animation: glowPulse 2s ease-in-out infinite;
+            z-index: 3;
+            text-align: center;
+            width: 100%;
+            height: 100px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            letter-spacing: 15px;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow:
+                    0 0 10px rgba(0, 255, 255, 0.8),
+                    0 0 20px rgba(0, 255, 255, 0.5),
+                    0 0 30px rgba(0, 255, 255, 0.3);
+            }
+
+            50% {
+                text-shadow:
+                    0 0 15px rgba(0, 255, 255, 0.9),
+                    0 0 25px rgba(0, 255, 255, 0.7),
+                    0 0 35px rgba(0, 255, 255, 0.5),
+                    0 0 45px rgba(0, 255, 255, 0.3);
+            }
+
+            100% {
+                text-shadow:
+                    0 0 10px rgba(0, 255, 255, 0.8),
+                    0 0 20px rgba(0, 255, 255, 0.5),
+                    0 0 30px rgba(0, 255, 255, 0.3);
+            }
+        }
+
+        .letter {
+            display: inline-block;
+            position: absolute;
+            opacity: 0;
+            animation: curvedFlyIn 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            text-transform: uppercase;
+            transform-origin: center;
+        }
+
+        @keyframes curvedFlyIn {
+            0% {
+                transform: translate(var(--startX), var(--startY)) rotate(var(--startRotate)) scale(0.2);
+                opacity: 0;
+            }
+
+            30% {
+                transform: translate(var(--curve1X), var(--curve1Y)) rotate(var(--midRotate)) scale(2);
+                opacity: 0.5;
+            }
+
+            60% {
+                transform: translate(var(--curve2X), var(--curve2Y)) rotate(var(--endRotate)) scale(0.5);
+                opacity: 0.8;
+            }
+
+            80% {
+                transform: translate(var(--finalX), 0) rotate(0deg) scale(1.5);
+                opacity: 1;
+            }
+
+            90% {
+                transform: translate(var(--finalX), 0) rotate(0deg) scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--finalX), 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .shrapnel {
+            position: absolute;
+            background: white;
+            width: 2px;
+            height: 2px;
+            animation: explode 1s forwards;
+        }
+
+        @keyframes explode {
+            from {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        .warp-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 1s, opacity 1s;
+            pointer-events: none;
+        }
+
+        /* Your existing cursor styles */
+        .cursor {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            transform-style: preserve-3d;
+            animation: rotateCube 6s infinite linear;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .cursor div {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 255, 255, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.7);
+            animation: colorShift 8s infinite linear;
+        }
+
+        @keyframes colorShift {
+            0% {
+                background: rgba(0, 255, 255, 0.5);
+                border-color: rgba(0, 255, 255, 0.7);
+            }
+            25% {
+                background: rgba(255, 0, 255, 0.5);
+                border-color: rgba(255, 0, 255, 0.7);
+            }
+            50% {
+                background: rgba(255, 255, 0, 0.5);
+                border-color: rgba(255, 255, 0, 0.7);
+            }
+            75% {
+                background: rgba(0, 255, 0, 0.5);
+                border-color: rgba(0, 255, 0, 0.7);
+            }
+            100% {
+                background: rgba(0, 255, 255, 0.5);
+                border-color: rgba(0, 255, 255, 0.7);
+            }
+        }
+
+        @keyframes rotateCube {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+
+        .cursor .front {
+            transform: rotateY(0deg) translateZ(15px);
+        }
+
+        .cursor .back {
+            transform: rotateY(180deg) translateZ(15px);
+        }
+
+        .cursor .left {
+            transform: rotateY(-90deg) translateZ(15px);
+        }
+
+        .cursor .right {
+            transform: rotateY(90deg) translateZ(15px);
+        }
+
+        .cursor .top {
+            transform: rotateX(90deg) translateZ(15px);
+        }
+
+        .cursor .bottom {
+            transform: rotateX(-90deg) translateZ(15px);
+        }
+
+        /* Update the shrapnel animation */
+        .letter-particle {
+            position: absolute;
+            font-family: 'Futuristic', sans-serif;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            animation: particleMove 1.5s ease-out forwards;
+            transform-origin: center;
+        }
+
+        @keyframes particleMove {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+                filter: hue-rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                filter: hue-rotate(180deg);
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rotate));
+                opacity: 0;
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        /* Add play button styles */
+        .play-button {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00ffff;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .play-button::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid #00ffff;
+            margin-left: 5px;
+        }
+
+        .play-button:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Hide text initially */
+        .animated-text {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Add warp transition animation */
+        @keyframes warpTransition {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                filter: brightness(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5) rotate(720deg);
+                filter: brightness(1.5) contrast(1.5);
+            }
+            75% {
+                transform: translate(-50%, -50%) scale(2) rotate(1080deg);
+                filter: brightness(2) contrast(2);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3) rotate(1440deg);
+                filter: brightness(3) contrast(3) blur(10px);
+            }
+        }
+
+        /* Add spiral animation before warp */
+        @keyframes spiralOut {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.5) rotate(1080deg) translateX(100vw);
+            }
+        }
+
+        .warp-active {
+            animation: spiralOut 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+                       warpTransition 2s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor" class="cursor">
+        <div class="front"></div>
+        <div class="back"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="top"></div>
+        <div class="bottom"></div>
+    </div>
+    <img id="stillChar" src="Images/hero1still.png" class="character" alt="Character">
+    <img id="movingChar" src="Images/mehmove.gif" class="character" style="opacity: 0;" alt="Moving Character">
+    <div class="warp-transition" id="warpTransition"></div>
+
+    <script>
+        const stillChar = document.getElementById('stillChar');
+        const movingChar = document.getElementById('movingChar');
+        const warpTransition = document.getElementById('warpTransition');
+
+        // Add audio elements
+        const backgroundMusic = new Audio('halo.mp3');
+        const textSound = new Audio('textsound.mp3');
+
+        // Update initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial setup
+            stillChar.style.transform = 'translate(-50%, -50%) scale(0)';
+            stillChar.style.opacity = '0';
+            movingChar.style.transform = 'translate(-50%, -50%) scale(0)';
+            movingChar.style.opacity = '0';
+            
+            // Create play button
+            const playButton = document.createElement('button');
+            playButton.className = 'play-button';
+            document.body.appendChild(playButton);
+            
+            // Start background music immediately (muted)
+            backgroundMusic.loop = true;
+            backgroundMusic.play().catch(console.error);
+            backgroundMusic.volume = 0;
+            
+            // Play button click handler
+            playButton.addEventListener('click', async () => {
+                // Fade in background music
+                let volume = 0;
+                const fadeInterval = setInterval(() => {
+                    volume = Math.min(volume + 0.1, 1);
+                    backgroundMusic.volume = volume;
+                    if (volume >= 1) clearInterval(fadeInterval);
+                }, 100);
+                
+                // Play text sound
+                textSound.play();
+                
+                // Remove play button
+                playButton.style.transition = 'all 0.5s ease';
+                playButton.style.opacity = '0';
+                setTimeout(() => playButton.remove(), 500);
+                
+                // Adjusted zoom animation
+                let scale = 0;
+                let opacity = 0;
+                const zoomInterval = setInterval(() => {
+                    scale = Math.min(scale + 0.004, 1);  // Faster increment
+                    opacity = Math.min(opacity + 0.003, 1);  // Slightly slower opacity
+                    
+                    stillChar.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                    stillChar.style.opacity = opacity;
+                    movingChar.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                    movingChar.style.opacity = '0';
+                    
+                    if (scale >= 1 && opacity >= 1) clearInterval(zoomInterval);
+                }, 50);
+                
+                startTextSequence();
+            });
+        });
+
+        // Update hover effect
+        stillChar.addEventListener('mouseover', () => {
+            if (stillChar.style.pointerEvents === 'auto') {  // Only if clickable
+                stillChar.style.opacity = '0';
+                movingChar.style.opacity = '1';
+                movingChar.style.transform = stillChar.style.transform;
+            }
+        });
+
+        stillChar.addEventListener('mouseout', () => {
+            if (stillChar.style.pointerEvents === 'auto') {  // Only if clickable
+                stillChar.style.opacity = '1';
+                movingChar.style.opacity = '0';
+            }
+        });
+
+        // Enhanced zoom transition
+        function startWarpTransition() {
+            // Ensure we're using the still image
+            movingChar.style.opacity = '0';
+            stillChar.style.opacity = '1';
+            
+            // Add dramatic zoom effect with easing
+            const zoomDuration = 2000; // 2 seconds
+            let progress = 0;
+            const zoomInterval = setInterval(() => {
+                progress += 0.02;
+                
+                // Cubic easing for smoother acceleration
+                const easing = 1 - Math.pow(1 - progress, 3);
+                const scale = 1 + (easing * 15); // More dramatic zoom
+                const blur = easing * 10; // Add progressive blur
+                const brightness = 1 + easing; // Increase brightness during zoom
+                
+                stillChar.style.transition = 'none';
+                stillChar.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                stillChar.style.filter = `blur(${blur}px) brightness(${brightness})`;
+                stillChar.style.opacity = Math.max(0, 1 - easing);
+                
+                // Background fade to white
+                document.body.style.backgroundColor = `rgb(${easing * 255}, ${easing * 255}, ${easing * 255})`;
+                
+                if (progress >= 1) {
+                    clearInterval(zoomInterval);
+                    window.location.href = 'Homepage.html';
+                }
+            }, 20);
+        }
+
+        // Update click handler
+        async function startTextSequence() {
+            const hello = createAnimatedText("HELLO");
+            hello.style.visibility = 'visible';
+            hello.style.opacity = '1';
+            
+            await new Promise(resolve => setTimeout(resolve, 8000));
+            
+            transformText(hello, "CLICK TO ENTER");
+            
+            // Enable click functionality after text forms
+            setTimeout(() => {
+                stillChar.style.pointerEvents = 'auto';
+                stillChar.addEventListener('click', startWarpTransition);
+            }, 5000);
+        }
+
+        // Update transform text function to ensure no overlap
+        function transformText(oldTextElement, newText) {
+            // Remove old text first
+            oldTextElement.style.transition = 'opacity 0.5s ease';
+            oldTextElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                oldTextElement.remove();
+                // Create new text with animation
+                const newTextElement = createAnimatedText(newText);
+                newTextElement.style.visibility = 'visible';
+                newTextElement.style.opacity = '1';
+            }, 500);
+        }
+
+        function createAnimatedText(text) {
+            const container = document.createElement('div');
+            container.className = 'animated-text';
+
+            // Increased letter spacing
+            const letterSpacing = 70;  // Increased from 50
+            const totalWidth = text.length * letterSpacing;
+            const startPosition = -totalWidth / 2;
+
+            text.split('').forEach((char, i) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+
+                // More extreme random positions
+                const radius = 800;  // Increased radius for wider movement
+                const angle = (i / (text.length - 1)) * Math.PI * 2;  // Full circle
+
+                const startX = (Math.random() - 0.5) * window.innerWidth * 1.5;
+                const startY = (Math.random() - 0.5) * window.innerHeight * 1.5;
+
+                // More dynamic curve points
+                const curve1X = Math.cos(angle) * radius * (Math.random() + 0.5);
+                const curve1Y = Math.sin(angle) * radius * (Math.random() + 0.5);
+
+                const curve2X = Math.cos(angle + Math.PI / 2) * radius * 0.7;
+                const curve2Y = Math.sin(angle + Math.PI / 2) * radius * 0.7;
+
+                const finalX = startPosition + (i * letterSpacing);
+
+                span.style.setProperty('--startX', `${startX}px`);
+                span.style.setProperty('--startY', `${startY}px`);
+                span.style.setProperty('--curve1X', `${curve1X}px`);
+                span.style.setProperty('--curve1Y', `${curve1Y}px`);
+                span.style.setProperty('--curve2X', `${curve2X}px`);
+                span.style.setProperty('--curve2Y', `${curve2Y}px`);
+                span.style.setProperty('--finalX', `${finalX}px`);
+
+                // More extreme rotations
+                span.style.setProperty('--startRotate', `${Math.random() * 1440 - 720}deg`);  // 4 rotations max
+                span.style.setProperty('--midRotate', `${Math.random() * 1080 - 540}deg`);    // 3 rotations max
+                span.style.setProperty('--endRotate', `${Math.random() * 720 - 360}deg`);     // 2 rotations max
+
+                // Randomized delay for more chaotic movement
+                span.style.animationDelay = `${Math.random() * 2 + i * 0.1}s`;
+
+                container.appendChild(span);
+            });
+
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // Cursor movement
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.pageX + 'px';
+            cursor.style.top = e.pageY + 'px';
+        });
+    </script>
+</body>
+
+</html>

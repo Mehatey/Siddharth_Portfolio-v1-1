@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Homepage</title>
+    <style>
+        @font-face {
+            font-family: 'Futuristic';
+            src: url('Futuristic.ttf') format('truetype');
+        }
+
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            animation: none !important;
+            transition: none !important;
+        }
+
+        .nav-link {
+            display: block;
+            font-size: 24px;
+            color: #00ffff;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            opacity: 1 !important;
+            visibility: visible !important;
+            animation: none !important;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #000000, #0a0a0a, #151515, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            position: relative;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)" opacity="0.08"/%3E%3C/svg%3E');
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .navigation {
+            position: fixed;
+            left: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            opacity: 1;
+        }
+
+        .nav-link {
+            display: block;
+            font-size: 24px;
+            color: #00ffff;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            opacity: 1 !important;
+            visibility: visible !important;
+            animation: none !important;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            transform: translateX(10px) scale(1.1);
+            text-shadow:
+                0 0 10px rgba(0, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 255, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .center-content {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 17.5px;
+            height: 17.5px;
+            z-index: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .center-gif {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+            opacity: 1 !important;
+            pointer-events: none;
+            animation: none !important;
+        }
+
+        @keyframes colorGradient {
+            0% {
+                filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
+            }
+
+            33% {
+                filter: drop-shadow(0 0 20px rgba(255, 223, 0, 0.8));
+            }
+
+            66% {
+                filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.8));
+            }
+
+            100% {
+                filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
+            }
+        }
+
+        .portfolio-title {
+            position: fixed;
+            left: 50%;
+            top: 30px;
+            transform: translateX(-50%);
+            font-family: 'Futuristic', sans-serif;
+            color: #00ffff;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            opacity: 1;
+        }
+
+        .left-nav,
+        .right-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            opacity: 1;
+        }
+
+        .left-nav {
+            left: 50px;
+        }
+
+        .right-nav {
+            right: 50px;
+        }
+
+        .nav-link {
+            font-family: 'Futuristic', sans-serif !important;
+            font-size: 24px;
+            color: #00ffff;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            opacity: 1 !important;
+            letter-spacing: 2px;
+        }
+
+        .typewriter-container {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+        }
+
+        .resume-link {
+            position: fixed;
+            top: 30px;
+            right: 50px;
+            font-family: 'Futuristic', sans-serif;
+            font-size: 36px;
+            color: #00ffff;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            opacity: 1;
+            z-index: 1000;
+        }
+
+        .resume-link:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            text-shadow:
+                0 0 10px rgba(0, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 255, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .typewriter {
+            color: #00ffff;
+            font-family: 'Futuristic', sans-serif;
+            font-size: 32px;
+            letter-spacing: 4px;
+            line-height: 1.5;
+            word-spacing: 8px;
+        }
+
+        .moving-gif {
+            position: fixed;
+            top: 30px;
+            left: 50px;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #00ffff
+            }
+        }
+
+        /* Letter animation styles */
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            font-family: 'Futuristic', sans-serif;
+            font-size: 20px;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            position: absolute;
+            white-space: nowrap;
+        }
+
+        /* Space character styling */
+        .letter.space {
+            width: 12px;
+        }
+
+        @keyframes flyIn {
+            0% {
+                transform: translate(var(--startX), var(--startY)) rotate(var(--startRotate));
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate(var(--endX), var(--endY)) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Top bar alignment */
+        .top-bar {
+            position: fixed;
+            top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            z-index: 3;
+            opacity: 1;
+        }
+
+        .moving-gif {
+            width: 80px;
+            height: 80px;
+        }
+
+        .portfolio-title {
+            font-family: 'Futuristic', sans-serif;
+            color: #00ffff;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Updated hover effects */
+        .center-gif {
+            transition: all 0.3s ease;
+        }
+
+        .center-gif:hover {
+            animation:
+                warpEffect 2s infinite,
+                glowEffect 3s infinite,
+                floatEffect 4s infinite;
+            filter: brightness(1.2) contrast(1.2);
+        }
+
+        @keyframes warpEffect {
+            0% {
+                transform: scale(1) rotate(0deg) skew(0deg);
+            }
+
+            25% {
+                transform: scale(1.1) rotate(5deg) skew(2deg);
+            }
+
+            50% {
+                transform: scale(0.9) rotate(-5deg) skew(-2deg);
+            }
+
+            75% {
+                transform: scale(1.1) rotate(5deg) skew(2deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg) skew(0deg);
+            }
+        }
+
+        @keyframes glowEffect {
+            0% {
+                filter: drop-shadow(0 0 10px #00ffff);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 30px #00ffff) brightness(1.3);
+            }
+
+            100% {
+                filter: drop-shadow(0 0 10px #00ffff);
+            }
+        }
+
+        @keyframes floatEffect {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Update navigation layout */
+        .left-nav {
+            left: calc(50% - 500px);
+        }
+
+        .right-nav {
+            right: calc(50% - 500px);
+        }
+
+        /* Ensure image stays centered */
+        img.center-gif {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(20);
+            width: auto;
+            height: auto;
+            opacity: 0;
+            animation: none !important;
+            pointer-events: none;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            transition: image-rendering 0.3s ease;
+        }
+
+        img.center-gif:hover {
+            image-rendering: auto;
+        }
+
+        /* Adjust navigation spacing relative to centered image */
+        .left-nav {
+            left: calc(50% - 450px);
+        }
+
+        .right-nav {
+            right: calc(50% - 450px);
+        }
+
+        /* Hide all elements initially */
+        .top-bar,
+        .left-nav,
+        .right-nav,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Center image with proper size */
+        .center-content {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 7px;
+            height: 7px;
+            z-index: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Adjust navigation spacing */
+        .left-nav {
+            position: fixed;
+            left: 150px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            opacity: 0;
+        }
+
+        .right-nav {
+            position: fixed;
+            right: 150px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            opacity: 0;
+        }
+
+        /* Adjust top bar styling */
+        .top-bar {
+            position: fixed;
+            top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            z-index: 3;
+            opacity: 0;
+        }
+
+        .portfolio-title,
+        .resume-link {
+            font-family: 'Futuristic', sans-serif;
+            font-size: 24px;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .moving-gif {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Smaller top text */
+        .portfolio-title,
+        .resume-link {
+            font-family: 'Futuristic', sans-serif;
+            font-size: 12px;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Larger moving gif */
+        .moving-gif {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Hide all elements initially */
+        .top-bar,
+        .left-nav,
+        .right-nav,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Prevent any interaction with hidden elements */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link {
+            pointer-events: auto;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* When visible, allow interactions */
+        .left-nav.visible,
+        .right-nav.visible,
+        .top-bar.visible,
+        .resume-link.visible {
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        /* Initially hide all other elements completely */
+        .top-bar,
+        .left-nav,
+        .right-nav,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            transition: none !important;
+            animation: none !important;
+        }
+
+        /* Add typewriter animation for links */
+        .nav-link,
+        .resume-link,
+        .portfolio-title {
+            overflow: visible;
+            white-space: normal;
+            border-right: none;
+            width: auto !important;
+            animation: none !important;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #00ffff
+            }
+        }
+
+        /* Initially hide all elements */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link {
+            pointer-events: auto;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Typewriter animation styles */
+        .nav-link,
+        .resume-link,
+        .portfolio-title {
+            overflow: visible;
+            white-space: normal;
+            border-right: none;
+            width: auto !important;
+            animation: none !important;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #00ffff
+            }
+        }
+
+        /* Add zoom animation for center image */
+        .center-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transform: scale(0.1);
+            animation: zoomIn 6s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Ensure elements are hidden initially */
+        .nav-link,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Center image container */
+        .center-content {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 17.5px;
+            height: 17.5px;
+            z-index: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Force image size */
+        img.center-gif {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(20);
+            width: auto;
+            height: auto;
+            opacity: 0;
+            animation: none !important;
+            pointer-events: none;
+            max-width: 17.5px;
+            max-height: 17.5px;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Remove any !important or visibility: hidden from other elements */
+        .nav-link,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            opacity: 1;
+            transition: opacity 8s ease;
+        }
+
+        /* Center image with permanent pixelation until hover */
+        img.center-gif {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(20);
+            width: auto;
+            height: auto;
+            opacity: 0;
+            animation: none !important;
+            pointer-events: none;
+            image-rendering: pixelated;
+            /* Ensure pixelation */
+            -ms-interpolation-mode: nearest-neighbor;
+            transition: image-rendering 0.3s ease;
+        }
+
+        img.center-gif:hover {
+            image-rendering: auto;
+            /* Remove pixelation only on hover */
+        }
+
+        /* Remove any hiding styles from other elements */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease;
+        }
+
+        /* Force image size and permanent pixelation */
+        img.center-gif {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(20);
+            width: auto;
+            height: auto;
+            opacity: 0;
+            animation: none !important;
+            pointer-events: none;
+            image-rendering: pixelated !important;
+            /* Force pixelation */
+            -ms-interpolation-mode: nearest-neighbor;
+            transition: image-rendering 0.3s ease;
+        }
+
+        img.center-gif:hover {
+            image-rendering: auto !important;
+            /* Remove pixelation only on hover */
+        }
+
+        /* Make sure elements are visible by default */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Ensure elements are initially hidden */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 1s ease;
+        }
+
+        /* Update visibility styles */
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Remove conflicting visibility rules */
+        /* Delete or comment out any other visibility rules for these elements */
+
+        .left-nav,
+        .right-nav,
+        .top-bar,
+        .resume-link,
+        .portfolio-title,
+        .moving-gif {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <img src="Images/mehmove.gif" alt="Moving Animation" class="moving-gif">
+        <div class="portfolio-title">PORTFOLIO</div>
+        <a href="Images/resume.png" class="resume-link" target="_blank">RESUME</a>
+    </div>
+
+    <nav class="left-nav">
+        <a href="Data Portrait.html" class="nav-link">Data Portrait</a>
+        <a href="Experimental Clock.html" class="nav-link">Experimental Clock</a>
+        <a href="Face Generator.html" class="nav-link">Face Generator</a>
+    </nav>
+
+    <nav class="right-nav">
+        <a href="Exquisite Corpse.html" class="nav-link">Exquisite Corpse</a>
+        <a href="Game.html" class="nav-link">Game</a>
+        <a href="Lost and Found.html" class="nav-link">Lost and Found</a>
+        <a href="Optical Illusion.html" class="nav-link">Optical Illusion</a>
+    </nav>
+
+    <div class="typewriter-container">
+        <p class="typewriter">
+            I am a creative storyteller who enjoys making design that helps make better people.
+        </p>
+    </div>
+
+    <img src="Images/Sidscan2.gif" alt="3D Scan" class="center-gif">
+
+    <audio id="backgroundMusic" loop>
+        <source src="halo.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.volume = 0.3;
+            backgroundMusic.play();
+
+            const textSound = new Audio('textsound.mp3');
+            textSound.volume = 0.3;
+            textSound.play();
+
+            // Show all elements immediately
+            const elements = document.querySelectorAll('.left-nav, .right-nav, .top-bar, .resume-link, .portfolio-title, .moving-gif');
+            elements.forEach(element => {
+                element.style.visibility = 'visible';
+                element.style.opacity = '1';
+                element.style.pointerEvents = 'auto';
+            });
+
+            // Text animation
+            const text = "I am a creative storyteller who likes making design that helps create better people";
+            const container = document.querySelector('.typewriter-container');
+            container.textContent = '';
+
+            text.split('').forEach((char, i) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+
+                const startX = (Math.random() - 0.5) * window.innerWidth * 1.5;
+                const startY = (Math.random() - 0.5) * window.innerHeight * 1.5;
+                const endX = i * 15 - (text.length * 15 / 2);
+
+                span.style.setProperty('--startX', `${startX}px`);
+                span.style.setProperty('--startY', `${startY}px`);
+                span.style.setProperty('--endX', `${endX}px`);
+                span.style.setProperty('--endY', '0px');
+                span.style.setProperty('--startRotate', `${Math.random() * 720 - 360}deg`);
+
+                span.style.animation = `flyIn 6s cubic-bezier(0.4, 0, 0.2, 1) forwards ${i * 0.1}s`;
+
+                container.appendChild(span);
+            });
+        });
+    </script>
+</body>
+
+</html>
